@@ -1,0 +1,8 @@
+[alias]
+	track = "!sh -c \"\nif [ \\$# -eq 2 ]\n then\n   echo \\\"Setting tracking for branch \\\" \\$1 \\\" -> \\\" \\$2;\n   git branch --set-upstream \\$1 \\$2;\n else\n   git for-each-ref --format=\\\"local: %(refname:short) <--sync--> remote: %(upstream:short)\\\" refs/heads && echo --URLs && git remote -v;\nfi  \n\" -"
+    st = status
+    co = checkout
+    prb = pull --rebase --verbose
+    dc = diff --cached
+    pushf = push --force-with-lease
+    fetchm = fetch origin master:master

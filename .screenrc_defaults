@@ -1,0 +1,11 @@
+# status line at the bottom
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{.bW}%-w%{.rW}%f%n %t%{-}%+w %=%{..G}[%H %l] %{..Y} %m/%d %c "
+termcapinfo xterm-256color|xterm-color|xterm|xterms|xs|rxvt ti@:te@
+defshell -bash
+screen -t dex 0
+screen -t dex 1
+screen -t vhc 2
+screen -t hub 3
+screen -t remote 4

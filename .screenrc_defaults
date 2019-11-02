@@ -2,6 +2,7 @@
 hardstatus on
 hardstatus alwayslastline
 hardstatus string "%{.bW}%-w%{.rW}%f%n %t%{-}%+w %=%{..G}[%H %l] %{..Y} %m/%d %c "
+defscrollback 100000
 termcapinfo xterm-256color|xterm-color|xterm|xterms|xs|rxvt ti@:te@
 defshell -bash
 screen -t editor 0

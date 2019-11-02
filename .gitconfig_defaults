@@ -1,8 +1,13 @@
 [alias]
-	track = "!sh -c \"\nif [ \\$# -eq 2 ]\n then\n   echo \\\"Setting tracking for branch \\\" \\$1 \\\" -> \\\" \\$2;\n   git branch --set-upstream \\$1 \\$2;\n else\n   git for-each-ref --format=\\\"local: %(refname:short) <--sync--> remote: %(upstream:short)\\\" refs/heads && echo --URLs && git remote -v;\nfi  \n\" -"
+    track = "!sh -c \"\nif [ \\$# -eq 2 ]\n then\n   echo \\\"Setting tracking for branch \\\" \\$1 \\\" -> \\\" \\$2;\n   git branch --set-upstream \\$1 \\$2;\n else\n   git for-each-ref --format=\\\"local: %(refname:short) <--sync--> remote: %(upstream:short)\\\" refs/heads && echo --URLs && git remote -v;\nfi  \n\" -"
     st = status
     co = checkout
     prb = pull --rebase --verbose
     dc = diff --cached
     pushf = push --force-with-lease
     fetchm = fetch origin master:master
+    fetchd = fetch origin develop:develop
+    purdy=log --pretty=format:"%h%x09%x09%ad%x09%s[%an]" --date=short
+
+[format]
+    shortlog = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(12,trunc)%ad %C(auto,green)%<(7,trunc)%aN%C(auto,reset)%s%C(auto,red)% gD% D

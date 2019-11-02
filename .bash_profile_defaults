@@ -13,10 +13,6 @@ alias kvrx='mplayer -playlist ~/.mplayer/kvrx.pls'
 alias resonancefm='mplayer -playlist http://radio.canstream.co.uk:8004/live.mp3.m3u'
 alias ls='ls -GF'
 
-alias pingtest='sh -c 'while [ a=a ] ; do ping -q -A -c1 8.8.8.8 | grep "1 packets received"; if [ "$?" -ne "0" ] ; then echo "`date "+%Y-%m-%d %H:%M:%S"` failed ping"; fi; sleep 5; done' | tee ping.out | grep failed'
-
-alias nork="ssh -i ~/.ssh/nork.pem ec2-user@nork.ddns.net"
-
 somafm() { local station;echo "Select a station to listen to:";select station in "Silent" "Seventies" "Fluid" "Bagel" "Doomed" "Groove Salad" "Lush" "Suburbs of Goa" "Secret Agent" "Drone Zone" "Space Station" "cliqhop idm" "Digitalis" "Sonic Universe" "Boot Liquor" "Covers" "Illinois Street Lounge" "indie pop rocks" "PopTron" "Tags Trip" "Beat Bender" "Mission Control" "defcon" ;do station=$(echo -n "$station"|tr '[:upper:]' '[:lower:]'|sed 's/ //g');break;done;mplayer -vo none  -playlist http://somafm.com/${station}.pls;}
 
 export CLICOLOR=1
@@ -91,21 +87,24 @@ bash_prompt() {
     local UC=$C                 # user's color
     [ $UID -eq "0" ] && UC=$R   # root's color
     
-    PS1="$TITLEBAR${EMK}[${UC}\${NEW_PWD}${G}\$(add_git_branch)${EMK}]${W}\$ ${NONE}"
-    # without colors: PS1="[\u@\h \${NEW_PWD}]\\$ "
+   PS1="$TITLEBAR${EMK}[${UC}\${NEW_PWD}${G}\$(add_git_branch)${EMK}]${W} \n${NONE}\$ "
+    # without colors: 
     # extra backslash in front of \$ to make bash colorize the prompt
 }
 
-PROMPT_COMMAND=bash_prompt_command
 bash_prompt
 unset bash_prompt
 
-export HISTSIZE=100000
-export HISTCONTROL=ignoredups:erasedups
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
-shopt -s histappend                      # append to history, don't overwrite it
+# Consistent and forever bash history
+HISTSIZE=100000
+HISTFILESIZE=$HISTSIZE
+HISTCONTROL=ignorespace:ignoredups
+history-tee() {
+     history 1 >> $HOME/.bash_eternal_history
+}
 
-complete -o default -o nospace -W "$(/usr/bin/env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < $HOME/.ssh/config)" scp sftp ssh
+export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S   "
+PROMPT_COMMAND="bash_prompt_command;history-tee;history -a"
 
 # print the header (the first line of input)
 # and then run the specified command on the body (the rest of the input)
@@ -115,3 +114,5 @@ body() {
     printf '%s\n' "$header"
     "$@"
 }
+
+source ~/unixboxen/git-completion.bash

@@ -1,15 +1,6 @@
 ###############
 
 alias transpose="python ~/unixboxen/bin/transpose.py"
-alias ss="/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine &"
-alias pp='python -mjson.tool'
-
-alias kut='mplayer -playlist  http://www.publicbroadcasting.net/kut/ppr/kut.pls'
-alias kut2='mplayer -playlist  http://www.publicbroadcasting.net/kut/ppr/kut2.pls'
-alias kut3='mplayer -playlist  http://www.publicbroadcasting.net/kut/ppr/kut3.pls'
-alias kmfa='mplayer -playlist http://www.publicbroadcasting.net/kmfa/ppr/kmfa-noad.pls'
-alias koop='mplayer -playlist http://www.koop.org/sites/default/files/stream/KOOP-Stream-MP3.pls'
-alias kvrx='mplayer -playlist ~/.mplayer/kvrx.pls'
 alias resonancefm='mplayer -playlist http://radio.canstream.co.uk:8004/live.mp3.m3u'
 alias ls='ls -GF'
 

@@ -1,0 +1,42 @@
+#!/bin/sh
+
+GITHUB_USER=mjhaller
+
+if [ $# -eq 0 ]
+  then
+    echo "you need to supply a ticket number or no-ticket"
+fi
+
+FULL_MESSAGE=$1
+
+TICKET=`echo ${FULL_MESSAGE} | cut -f 1-2 -d- | sed 's/ //g'`
+MESSAGE=`echo ${FULL_MESSAGE} | cut -f 3 -d- | sed 's/^ //g'`
+
+BRANCH_SUFFIX=`echo ${MESSAGE} | sed 's/ /_/g'`
+COMMIT_MESSAGE="[${TICKET}] - ${MESSAGE}"
+BRANCH_NAME="${GITHUB_USER}/${TICKET}/${BRANCH_SUFFIX}"
+
+# handle no ticket case
+if [[ "${FULL_MESSAGE}" != *"-"* ]] ; then
+   BRANCH_NAME="${GITHUB_USER}/${BRANCH_SUFFIX}"
+   COMMIT_MESSAGE="[no-ticket] - ${MESSAGE}"
+fi
+
+echo "making new branch ${BRANCH_NAME}"
+echo "first commit ${COMMIT_MESSAGE}"
+
+read -r -p "Are you sure? [y/N] " response
+read -r -p "did you git pull first? [y/N] " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    git checkout -b "${BRANCH_NAME}"
+    git commit -a -m "${COMMIT_MESSAGE}"
+    git push --set-upstream origin "${BRANCH_NAME}"
+    read -r -p "you want to make a draft GH PR? [y/N] " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+    then
+        gh pr create -d --title "$COMMIT_MESSAGE" --body "$COMMIT_MESSAGE"
+    fi
+else
+    echo "k, bailing, bai"
+fi
